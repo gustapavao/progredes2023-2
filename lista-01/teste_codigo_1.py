@@ -12,14 +12,20 @@ while True:
 
 lista_random = []
 def gerar_lista(quantidade, valor_minimo, valor_maximo):
-    lista_random.append(valor_minimo)
-    lista_random.append(valor_maximo)
-    print(lista_random)
-    while True:
-        lista_random.append(randint(valor_minimo, valor_maximo))
-        if len(lista_random) == quantidade:
-            print('True')
-            break
+    try:
+        quantidade = int(quantidade)
+        valor_minimo = int(valor_minimo)
+        valor_maximo = int(valor_maximo)
+    except:
+        print('Ops! O valor informado não é um inteiro.\nInforme os valores novamente:')
+    else:
+        lista_random.append(valor_minimo)
+        lista_random.append(valor_maximo)
+        while True:
+            lista_random.append(randint(valor_minimo, valor_maximo))
+            if len(lista_random) == quantidade:
+                print('True')
+                break
 
 gerar_lista(quantidade_v, valor_minimo_v, valor_maximo_v)
 
@@ -33,5 +39,5 @@ def salvar_lista(nome_lista: list, nome_arquivo: str):
     print(check_file_existence)
 
     
-salvar_lista(lista_random, 'lista random')
+salvar_lista(lista_random, 'lista_random')
 
