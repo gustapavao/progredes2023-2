@@ -26,15 +26,7 @@ def gerar_lista(quantidade, valor_minimo, valor_maximo):
             if len(lista_random) == quantidade:
                 print(True)
                 print(lista_random)
-                break
-                
-
-
-gerar_lista(quantidade_v, valor_minimo_v, valor_maximo_v)
-if len(lista_random) != quantidade_v:
-    print(False)
-    print(None)
-
+                break               
 def salvar_lista(nome_lista: list, nome_arquivo: str):
     file = open(f'{nome_arquivo}.txt', 'w')
     for i in nome_lista:
@@ -44,5 +36,8 @@ def salvar_lista(nome_lista: list, nome_arquivo: str):
     check_file_existence = path.exists(file_existence)
     print(check_file_existence)
 
-    
+gerar_lista(quantidade_v, valor_minimo_v, valor_maximo_v)
+if len(lista_random) != quantidade_v:
+    print(False)
+    print(None)
 salvar_lista(lista_random, 'lista_random')
