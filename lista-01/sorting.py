@@ -2,22 +2,28 @@
 import os
 class sorting:
     __dir_atual = os.path.dirname(os.path.abspath(__file__))
-    __lstValores = list() 
+    __lstValores = None 
     
     def __init__(self, nome_arquivo):
-        file = os.path.exists((f'{self.__dir_atual}/{nome_arquivo}'))
-        if file:
+        __file = os.path.exists((f'{self.__dir_atual}/{nome_arquivo}'))
+        if __file:
             self.nome_arquivo = f'{self.__dir_atual}/{nome_arquivo}'
-            print("O arquivo foi encontrado")
+            # print("O arquivo foi encontrado")
+            return self.__ler_arquivo(f'{self.__dir_atual}/{nome_arquivo}')
         else:
-            print('O arquivo não foi encontrado')
+            # print('O arquivo não foi encontrado')
+            return None
             
-    
     @property
     def ListaValores(self):
         return self.__lstValores
     
-    def ler_arquivo(self, nome_arquivo=None):
+    def __str__(self):
+        return f"Olá usuário. Vou te ajudar a ordenar listas"
+        
+    
+    def __ler_arquivo(self, nome_arquivo=None):
+            self.__lstValores = list()
             try:
                 if nome_arquivo is None:
                     nome_arquivo = self.nome_arquivo
@@ -139,9 +145,9 @@ class sorting:
 
 
 
-pavao = sorting('lista_random.txt')
-pavao.ler_arquivo()
-pavao.ordena_lista() #Vai usar o quick e pegar a lista que foi aberta
+# pavao = sorting('lista_random.txt')
+# pavao.ler_arquivo()
+# pavao.ordena_lista() #Vai usar o quick e pegar a lista que foi aberta
 # pavao.ordena_lista('bubble')            # Vai pegar a lista que foi aberta e usar o método escolhido
 # pavao.ordena_lista('bubble', [567894564,64,894,684,894,647,984,6547,9846,7956,489,789,489,794,7,894,897,948,97,7489,7]) #Usa o método escolhido e pega a lista que foi passada
 # pavao.salvar_lista_ordenada('lista_ordenada.txt')
