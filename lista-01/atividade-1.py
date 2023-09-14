@@ -1,6 +1,6 @@
 from random import randint
 from os import path
-from gerenciar_arquivos import salvar_lista_em_txt
+from gerenciar_arquivos import *
 while True:
     try:
         quantidade_v = int(input('Informe um número inteiro (quantidade): '))
@@ -29,7 +29,11 @@ def gerar_lista(quantidade, valor_minimo, valor_maximo):
                 print(lista_random)
                 break
 
-gerenciar_arquivos.            
-
-
 gerar_lista(quantidade_v, valor_minimo_v, valor_maximo_v)
+gerenciar_arquivos.salvar_lista_em_txt(lista_random, "lista_random")          
+
+if gerenciar_arquivos.verificar_existencia_arquivo("lista_random"):
+    print(True)
+
+else:
+    print(False)
