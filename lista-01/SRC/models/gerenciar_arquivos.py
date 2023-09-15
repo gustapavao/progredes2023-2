@@ -9,12 +9,7 @@ class gerenciar_arquivos():
     def verificar_existencia_arquivo(nome_arquivo):
         import os
         return os.path.exists(f'./{nome_arquivo}')
-    
-    # def verificar_existencia_arquivo_neste_diretorio(nome_arquivo):
-    #     import os
-    #     __dir_atual = os.path.dirname(os.path.abspath(__file__))
-    #     return os.path.exists(f'{__dir_atual}/{nome_arquivo}')
-    
+
     def ler_arquivo_inteiros(nome_arquivo):
         lst_valores = None
         try:
