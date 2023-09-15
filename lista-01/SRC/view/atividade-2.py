@@ -1,19 +1,17 @@
 #SOU ALUNO DE POO E PROGREDES
 import os 
-from gerenciar_arquivos import *
-from sorting_methods import *
+from SRC.models.gerenciar_arquivos import gerenciar_arquivos
+from SRC.models.sorting_methods import sorting_methods
 
 class sorting:
     __dir_atual = os.path.dirname(os.path.abspath(__file__))
     __lstValores = list() 
     
     def __init__(self, nome_arquivo):
-
         if gerenciar_arquivos.verificar_existencia_arquivo(nome_arquivo):
             self.nome_arquivo = f'{self.__dir_atual}/{nome_arquivo}'
             self.__lstValores = gerenciar_arquivos.ler_arquivo_inteiros(self.nome_arquivo)
             print("O arquivo foi encontrado")
-
         else:
             print('O arquivo não foi encontrado')
             
@@ -24,25 +22,18 @@ class sorting:
     
     
     def changed(self, numero):
-        lista1 = self.__lstValores
-        lista2 = numero
-        
+        lista1 = self.ListaValores
+        lista2 = numero       
         try:
-            if lista1[1] == lista2[1]:
-                if lista1[-1] == lista2[-1]:
-                    pass
-        
+            if lista1[1] != lista2[1]:
+                if lista1[-1] != lista2[-1]: 
+                    return True  
         except IndexError:
             lista1 = self.__lista_out
-        
         finally:
             if lista1[1] == lista2[1]:
                 if lista1[-1] == lista2[-1]:
-                    print('Houve um erro e a lista não ordenada!')
-                    print(None)
-            else:
-                print(True)
-                print(self.lista_ordenada)
+                    return False
     
     def ordena_lista(self, metodo_ordena='quick', nome_lista:list= None):
         if nome_lista is None:
@@ -51,19 +42,19 @@ class sorting:
         elif nome_lista is not None:
             self.__lista_out = nome_lista.copy()
             
-        # na == 'quick':
-        #     self.lista_ordenada = sorting_methods.quicksort(nome_lista)
-        #     self.changed(values = nome_lista)if metodo_orde
+        if metodo_ordena == 'quick':
+            self.lista_ordenada = sorting_methods.quicksort(nome_lista)
+            self.changed(values = nome_lista)
         
-        if metodo_ordena == 'bubble':
+        elif metodo_ordena == 'bubble':
             self.lista_ordenada = sorting_methods.bubble_sort(nome_lista)
             self.changed(nome_lista)
         
-        if metodo_ordena == "selection":
+        elif metodo_ordena == "selection":
             self.lista_ordenada = sorting_methods.selection_sort(nome_lista)
             self.changed(nome_lista)
         
-        if metodo_ordena == "insertion":
+        elif metodo_ordena == "insertion":
             self.lista_ordenada = sorting_methods.insertion_sort(nome_lista)
             self.changed(nome_lista)
 

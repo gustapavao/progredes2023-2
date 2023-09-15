@@ -1,6 +1,7 @@
 from random import randint
-from os import path
-from gerenciar_arquivos import *
+from SRC.models.gerenciar_arquivos import gerenciar_arquivos
+from SRC.models.sorting_methods import sorting_methods
+
 while True:
     try:
         quantidade_v = int(input('Informe um número inteiro (quantidade): '))
@@ -20,13 +21,9 @@ def gerar_lista(quantidade, valor_minimo, valor_maximo):
     except:
         print('Ops! O valor informado não é um inteiro.\nInforme os valores novamente:')
     else:
-        lista_random.append(valor_minimo)
-        lista_random.append(valor_maximo)
         while True:
             lista_random.append(randint(valor_minimo, valor_maximo))
             if len(lista_random) == quantidade:
-                print(True)
-                print(lista_random)
                 break
 
 gerar_lista(quantidade_v, valor_minimo_v, valor_maximo_v)
