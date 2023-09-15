@@ -1,6 +1,5 @@
 from random import randint
-from SRC.models.gerenciar_arquivos import gerenciar_arquivos
-from SRC.models.sorting_methods import sorting_methods
+from ..models.gerenciar_arquivos import gerenciar_arquivos
 
 while True:
     try:
