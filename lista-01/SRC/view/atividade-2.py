@@ -1,7 +1,10 @@
 #SOU ALUNO DE POO E PROGREDES
-import os 
-from SRC.models.gerenciar_arquivos import gerenciar_arquivos
-from SRC.models.sorting_methods import sorting_methods
+import os, sys 
+here = (os.path.dirname(__file__))
+here = here.replace('view','models')
+sys.path.append(here)
+from gerenciar_arquivos import gerenciar_arquivos
+from sorting_methods import sorting_methods
 
 class sorting:
     __dir_atual = os.path.dirname(os.path.abspath(__file__))

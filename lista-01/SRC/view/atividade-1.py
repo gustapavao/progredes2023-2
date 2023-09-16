@@ -1,5 +1,11 @@
+import sys,os
+here = (os.path.dirname(__file__))
+here = here.replace('view','models')
+sys.path.append(here)
+
+
 from random import randint
-from ..models.gerenciar_arquivos import gerenciar_arquivos
+from gerenciar_arquivos import gerenciar_arquivos
 
 while True:
     try:
@@ -30,6 +36,5 @@ gerenciar_arquivos.salvar_lista_em_txt(lista_random, "lista_random")
 
 if gerenciar_arquivos.verificar_existencia_arquivo("lista_random"):
     print(True)
-
 else:
     print(False)
