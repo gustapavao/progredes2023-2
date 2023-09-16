@@ -1,5 +1,6 @@
 import os
 class gerenciar_arquivos():
+    
     def salvar_lista_em_txt(nome_lista: list, nome_arquivo: str):
         diretorio_salvar = os.path.dirname(__file__)
         diretorio_salvar = os.path.split(diretorio_salvar)
@@ -18,8 +19,11 @@ class gerenciar_arquivos():
 
     def ler_arquivo_inteiros(nome_arquivo):
         lst_valores = None
+        diretorio_verificar = os.path.dirname(__file__)
+        diretorio_verificar = os.path.split(diretorio_verificar)
+        diretorio_verificar = os.path.join(diretorio_verificar[0], "view", f'{nome_arquivo}.txt')
         try:
-            arquivo = open(nome_arquivo, 'r')
+            arquivo = open(diretorio_verificar, 'r')
         except:
             ('Houve um erro.')
         else:
