@@ -1,4 +1,4 @@
-import os
+import os, dpkt
 class gerenciar_arquivos():
     
     def salvar_lista_em_txt(nome_lista: list, nome_arquivo: str):
@@ -39,6 +39,22 @@ class gerenciar_arquivos():
                 arquivo.close()
         finally:
             return lst_valores
+        
+    def process_tcpdump_file(filename):
+        with open(filename, 'rb') as file:
+            pcap = dpkt.pcap.Reader(file)
+            for timestamp, buf in pcap:
+                eth = dpkt.ethernet.Ethernet(buf)
+
+            
+                if isinstance(eth.data, dpkt.ip.IP):
+                    ip = eth.data
+
+                # Extract source and destination IP addresses
+                    src_ip = dpkt.utils.inet_to_str(ip.src)
+                    dst_ip = dpkt.utils.inet_to_str(ip.dst)
+
+                print(f"Timestamp: {timestamp}, Source IP: {src_ip}, Destination IP: {dst_ip}")
 
 if __name__ == '__main__':
-    gerenciar_arquivos.salvar_lista_em_txt(list(), 'jo')
+    gerenciar_arquivos.salvar_lista_em_txt(list(), 'test')

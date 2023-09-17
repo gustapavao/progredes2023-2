@@ -1,8 +1,0 @@
-Preciso estudar sockets
-
-Revisão:
-Estruturas: list, tup, set, dict
-Exception
-Files
-UDF
-def
