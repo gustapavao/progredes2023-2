@@ -6,7 +6,7 @@ class Cartola:
         self.__atletas = self.atletas(data)
         formacao = self.formacao(forma_time)
         time = self.montar_time(formacao)
-        print(time)
+        self.format_print(time)
     
     @property
     def all_Clubes(self):
@@ -29,22 +29,22 @@ class Cartola:
     
     def posicoes(self, data):
         posicoes = data["posicoes"]
-        lista_de_posicoes = []
+        lista_de_posicoes = {}
         for id_pos, values in posicoes.items():
-            lista_de_posicoes.append({id_pos:{"nome":values["nome"]}})
+            lista_de_posicoes[id_pos]={"posição":values["nome"]}
         return lista_de_posicoes
     
     def atletas(self, data):
         atletas = data["atletas"]
         lista_de_atletas = []
         for i in atletas:
-            lista_de_atletas.append({"id_clube": i["clube_id"], 
+            lista_de_atletas.append({"time": i["clube_id"], 
                                      "posicao":i["posicao_id"], 
-                                     "foto_atleta":i["foto"],
+                                     "foto":i["foto"],
                                      "nome":i["nome"],
                                      "nome_abreviado":i["apelido_abreviado"],
-                                     "pontuacao": float(i["media_num"])*float(i["jogos_num"])})
-        lista_de_atletas = sorted(lista_de_atletas, key= lambda d : d['pontuacao'], reverse=True)
+                                     "pontuação": float(i["media_num"])*float(i["jogos_num"])})
+        lista_de_atletas = sorted(lista_de_atletas, key= lambda d : d['pontuação'], reverse=True)
         return lista_de_atletas
     
     def escolher_zagueiro(self, formacao:str, lista_de_atletas):
@@ -133,25 +133,26 @@ class Cartola:
         gol = self.escolher_goleiro(lista_de_atletas)
         tec = self.escolher_tecnico(lista_de_atletas)
         time = [gol, zag, mei, atc, tec]
-        time = self.formatar_time(time)
         time = self.ajuste_time(time)
         return time
 
-    def formatar_time(self, time):
-        time_formato = []
-        for i in time:
-            for jogador in i:
-                dados = {
-                    "posição": jogador['posicao'],
-                    "nome": jogador['nome'],
-                    "foto": jogador['foto_atleta'],
-                    "pontuação":jogador['pontuacao'],
-                    "time": jogador['id_clube'],
-                    "escudo": jogador['id_clube'],
-                    "nome_abreviado": jogador['nome_abreviado']
-                }
-            time_formato.append(dados)
-        return time_formato
+    # def formatar_time(self, time):
+    #     time_formato = []
+    #     print(time)
+    #     for i in time:
+    #         for jogador in i:
+    #             dados = {
+    #                 "posição": jogador['posicao'],
+    #                 "nome": jogador['nome'],
+    #                 "foto": jogador['foto_atleta'],
+    #                 "pontuação":jogador['pontuacao'],
+    #                 "time": jogador['id_clube'],
+    #                 "escudo": jogador['id_clube'],
+    #                 "nome_abreviado": jogador['nome_abreviado']
+    #             }
+    #         time_formato.append(dados)
+            
+    #     return time_formato
     
     def formacao(self, formacao_inp):
         if formacao_inp == 1:
@@ -172,29 +173,52 @@ class Cartola:
             print('Você escolheu um número fora das opções')    
             exit()
         return formacao
-    #FALTA APENAS ESTA
     def ajuste_time(self, time):
         clubes = self.all_Clubes
-        dados = {}
+        posicoes = self.all_posicoes
+        dados_times = {}
         for clube in clubes:
             for id, data in clube.items():
-                dados[id] = {
-                    'name': data['nome'],
-                    'url': data['url do escudo']
+                dados_times[id] = {
+                    'time': data['nome'],
+                    'escudo': data['url do escudo']
                 }
-        print(dados)
-        for atleta in time:
-            time_id = str(atleta['time'])
-            print(time_id)
-            if time_id in dados.keys():
+        time_with_teams = []
+        for i in time:
+            for atleta in i:    
+                time_id = str(atleta['time'])
+                aux = dados_times.get(time_id)
+                if aux:
+                    atleta_with_team  = atleta.copy()
+                    atleta_with_team.update(aux)
+                    time_with_teams.append(atleta_with_team)
+        print(time_with_teams)
+        team = []
+        for atleta in time_with_teams:
+            posicao = str(atleta['posicao'])
+            aux = posicoes.get(posicao)
+            if aux:
+                atleta_with_pos  = atleta.copy()
+                atleta_with_pos.update(aux)
+                team.append(atleta_with_pos)
+        return team
+    
+    def format_print(self, time):
+        jogadores = []
+        for enum, i in enumerate(time):
+            nome = i.get("nome_abreviado")
+            posicao = i.get("posição")
+            team = i.get("time")
+            pontos = i.get("pontuação")
+            jogador = f"{enum+1} - Posição: {posicao}, Nome: {nome}, Time: {team}, Pontuação Total: {pontos}"
+            print(jogador)
+            jogadores.append(jogador)
+        while True:
+            opcao_salvar = input('Você gostaria de salvar? (y/n)').lower()
+            if opcao_salvar == "y":
+                gerenciar_arquivos.salvar_lista_em_txt(jogadores, 'yyyy')
+            
 
-                #MUDAR AQUI PQ N SUPORTA
-                time_id['time'] = dados[time_id]['name']
-                time_id['escudo'] = dados[time_id]['url']
-                print('bububu')
-            else:
-                print('nada')
-        
 
         
 
