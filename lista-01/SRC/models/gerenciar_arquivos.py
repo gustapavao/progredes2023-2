@@ -4,6 +4,7 @@ class gerenciar_arquivos():
     def salvar_lista_em_txt(nome_lista: list, nome_arquivo: str):
         diretorio_salvar = os.path.dirname(__file__)
         diretorio_salvar = os.path.split(diretorio_salvar)
+        print(diretorio_salvar)
         diretorio_salvar = os.path.join(diretorio_salvar[0], "view", f'{nome_arquivo}.txt')
         print(diretorio_salvar)
         file = open(diretorio_salvar, 'w')
