@@ -12,6 +12,7 @@ while True:
         quantidade_v = int(input('Informe um número inteiro (quantidade): '))
         valor_minimo_v = int(input('Informe um número inteiro(valor mínimo): '))
         valor_maximo_v = int(input('Informe um número inteiro (valor máximo): '))
+        nome_arquivo = input('Informe o nome que o arquivo deve receber: ')
     except ValueError:
         print('Ops! O valor informado não é um inteiro.\nInforme os valores de quantidade, valor máximo e valor mínimo novamente:\n\t')
     else:
@@ -32,9 +33,10 @@ def gerar_lista(quantidade, valor_minimo, valor_maximo):
                 break
 
 gerar_lista(quantidade_v, valor_minimo_v, valor_maximo_v)
-gerenciar_arquivos.salvar_lista_em_txt(lista_random, "lista_random")          
 
-if gerenciar_arquivos.verificar_existencia_arquivo("lista_random"):
+gerenciar_arquivos.salvar_lista_em_txt(lista_random, nome_arquivo)          
+
+if gerenciar_arquivos.verificar_existencia_arquivo(nome_arquivo):
     print(True)
 else:
     print(False)
