@@ -8,7 +8,7 @@ class Cartola:
                 #AJUSTAR PARA CONSEGUIR LER EM OUTROS COMPUTADORES
                 file.close()
         elif ano == "2022":
-            with open("/home/pavao/Desktop/Estudos/arquivos/dados_cartola_fc/cartola_fc_2022.txt", "r", encoding="utf-8") as file:
+            with open("/home/pavao/Desktop/Estudos/arquivos/dados_cartola_fc/cartola_fc_2022.txt", "r", encoding="utf-8")  as file:
                 data = json.load(file)
                 file.close()
         self.ano = ano

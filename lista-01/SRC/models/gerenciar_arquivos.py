@@ -1,4 +1,9 @@
-import os, dpkt, sys
+import os
+import dpkt
+import sys
+import rarfile
+
+
 class gerenciar_arquivos():
     
     def salvar_lista_em_txt(nome_lista: list, nome_arquivo: str):
@@ -9,8 +14,22 @@ class gerenciar_arquivos():
         file = open(caminho, 'w')
         for i in nome_lista:
             file.writelines(f'{i}\n')
-        file.close
+        file.close()
 
+    def descompactar_arquivo():
+        arq = "/home/pavao/Desktop/Estudos/arquivos/serie_historica_anp.rar"
+        if rarfile.is_rarfile(arq):
+            caminho = sys.argv[0]
+            caminho = os.path.split(caminho)
+            try:
+                os.mkdir(os.path.join(caminho[0], "serie_historica_anp"))
+            except FileExistsError:
+                print("\nThe directory already exists")
+                exit()
+            file = rarfile.RarFile(arq)
+            file.extractall(path=os.path.join(caminho[0], "serie_historica_anp"))
+            for f in file.infolist():
+                print(f"O arquivo{f.filename} de tamanho {f.file_size} foi extraido com sucesso")
 
     def verificar_existencia_arquivo(nome_arquivo):
         caminho = sys.argv[0]
@@ -33,13 +52,73 @@ class gerenciar_arquivos():
                 if not f: break
                 for i in f:
                     try:
-                        lst_valores.append(int(i))
+                            lst_valores.append(int(i))
                     except ValueError:
                         print('Houve um erro com um ou mais valores do arquivo')
                 arquivo.close()
         finally:
             return lst_valores
-        
+
+    def convert_csv_to_list_save(nome_arquivo):
+        dados =[]
+        caminho = sys.argv[0]
+        caminho = os.path.split(caminho)
+        caminho = os.path.join(caminho[0], "serie_historica_anp/", nome_arquivo)
+        files = open(caminho, "r")
+        for i in files.readlines():
+            i = i.split(";")
+            dados.append(
+                {
+                    "região_sigla": i[0],
+                    "estado_sigla": i[1],
+                    #"municipio": i[2],
+                    #"Revenda": i[3],
+                    #"CPNJ_revenda": i[4],
+                    #"Nome_rua": i[5],
+                    #"Numero_rua": i[6],
+                    #"Complemento": i[7],
+                    #"Bairro": i[8],
+                    #"CEP": i[9],
+                    "Produto": i[10],
+                    "Data_coleta": i[11],
+                    "Valor_venda": i[12],
+                    #"Valor_compra": i[13],
+                    #"Unidade_medida": i[14],
+                    "Bandeira": i[15],
+
+                }
+            )
+        return dados
+    def convert_csv_to_list(nome_arquivo):
+        dados =[]
+        caminho = sys.argv[0]
+        caminho = os.path.split(caminho)
+        caminho = os.path.join(caminho[0], "serie_historica_anp/", nome_arquivo)
+        files = open(caminho, "r")
+        for i in files.readlines():
+            i = i.split(";")
+            dados.append(
+                {
+                    "região_sigla": i[0],
+                    "estado_sigla": i[1],
+                    #"municipio": i[2],
+                    #"Revenda": i[3],
+                    #"CPNJ_revenda": i[4],
+                    #"Nome_rua": i[5],
+                    #"Numero_rua": i[6],
+                    #"Complemento": i[7],
+                    #"Bairro": i[8],
+                    #"CEP": i[9],
+                    "Produto": i[10],
+                    "Data_coleta": i[11],
+                    "Valor_venda": i[12],
+                    "Valor_compra": i[13],
+                    "Unidade_medida": i[14],
+                    "Bandeira": i[15],
+
+                }
+            )
+        return dados
     def process_tcpdump_file(filename):
         with open(filename, 'rb') as file:
             pcap = dpkt.pcap.Reader(file)
