@@ -10,19 +10,32 @@ class gerenciar_arquivos():
         caminho = sys.argv[0]
         caminho = os.path.split(caminho)
         caminho = str(caminho[0] + "/" + f"{nome_arquivo}.txt")
-        
         file = open(caminho, 'w')
         for i in nome_lista:
             file.writelines(f'{i}\n')
         file.close()
 
+    def salvar_lista_anp_bandeira(nome_lista: list, nome_arquivo: str):
+        caminho = sys.argv[0]
+        caminho = os.path.split(caminho)
+        print(caminho)
+        caminho = os.path.join(str(caminho[0]),"dados_estatisticos",f"{nome_arquivo}.txt")
+        print(caminho)
+        file = open(caminho, 'w')
+        for i in nome_lista:
+            file.writelines(f'{i}\n')
+        file.close()
+    
+
+
     def descompactar_arquivo():
-        arq = "/home/pavao/Desktop/Estudos/arquivos/serie_historica_anp.rar"
+        arq = "/home/pavao/Desktop/Estudos/arquivos/serie_historica_anp.rar" #ajuste de diretório
         if rarfile.is_rarfile(arq):
             caminho = sys.argv[0]
             caminho = os.path.split(caminho)
             try:
                 os.mkdir(os.path.join(caminho[0], "serie_historica_anp"))
+                os.mkdir(os.path.join(caminho[0], "dados_estatisticos"))
             except FileExistsError:
                 print("\nThe directory already exists")
                 exit()
@@ -59,36 +72,6 @@ class gerenciar_arquivos():
         finally:
             return lst_valores
 
-    def convert_csv_to_list_save(nome_arquivo):
-        dados =[]
-        caminho = sys.argv[0]
-        caminho = os.path.split(caminho)
-        caminho = os.path.join(caminho[0], "serie_historica_anp/", nome_arquivo)
-        files = open(caminho, "r")
-        for i in files.readlines():
-            i = i.split(";")
-            dados.append(
-                {
-                    "região_sigla": i[0],
-                    "estado_sigla": i[1],
-                    #"municipio": i[2],
-                    #"Revenda": i[3],
-                    #"CPNJ_revenda": i[4],
-                    #"Nome_rua": i[5],
-                    #"Numero_rua": i[6],
-                    #"Complemento": i[7],
-                    #"Bairro": i[8],
-                    #"CEP": i[9],
-                    "Produto": i[10],
-                    "Data_coleta": i[11],
-                    "Valor_venda": i[12],
-                    #"Valor_compra": i[13],
-                    #"Unidade_medida": i[14],
-                    "Bandeira": i[15],
-
-                }
-            )
-        return dados
     def convert_csv_to_list(nome_arquivo):
         dados =[]
         caminho = sys.argv[0]
@@ -97,28 +80,63 @@ class gerenciar_arquivos():
         files = open(caminho, "r")
         for i in files.readlines():
             i = i.split(";")
+            data = i[11]
+            data = data.split("/")
             dados.append(
                 {
                     "região_sigla": i[0],
                     "estado_sigla": i[1],
-                    #"municipio": i[2],
-                    #"Revenda": i[3],
-                    #"CPNJ_revenda": i[4],
-                    #"Nome_rua": i[5],
-                    #"Numero_rua": i[6],
-                    #"Complemento": i[7],
-                    #"Bairro": i[8],
-                    #"CEP": i[9],
                     "Produto": i[10],
-                    "Data_coleta": i[11],
+                    "Ano": data[-1],
                     "Valor_venda": i[12],
-                    "Valor_compra": i[13],
-                    "Unidade_medida": i[14],
                     "Bandeira": i[15],
-
+                    "Revenda": i[3],
                 }
             )
         return dados
+    
+    def ajust_bandeira(dados):
+        media_bandeira = list()
+        qtde_postos = []
+        valor_venda_total = 0
+        divisor = 0
+        erro_leitura_valor = 0
+
+        for i in dados:
+                for j in i:
+                    if j["Revenda"] in qtde_postos:
+                        pass
+                    else:
+                        qtde_postos.append(j["Revenda"])
+                    valor = j["Valor_venda"]
+                    try:
+                        valor = int(valor)
+                    except ValueError:
+                        erro_leitura_valor += 1
+                    else:
+                        valor_venda_total += valor
+                        divisor += 1
+
+        qtde_postos = set(qtde_postos)
+
+        print("terminou")
+        quantidade_de_postos = 0
+        for i in range(len(qtde_postos)):
+            quantidade_de_postos += i
+        print(quantidade_de_postos)
+
+        for i in dados:
+            for data in i:
+                if data['Produto'] == "Produto":
+                    pass
+                else:
+                    media_bandeira.append({"Bandeira": data["Bandeira"] + "; ", "Produto": data["Produto"] + "; ", "Ano": data["Ano"] + "; ","Valor_médio": f"{valor_venda_total / divisor}; ", "Quantidade_postos": f"{quantidade_de_postos}"})
+        return media_bandeira
+
+
+    def ajust_regiao(dados):
+        pass
+
     def process_tcpdump_file(filename):
         with open(filename, 'rb') as file:
             pcap = dpkt.pcap.Reader(file)
@@ -136,4 +154,4 @@ class gerenciar_arquivos():
                 print(f"Timestamp: {timestamp}, Source IP: {src_ip}, Destination IP: {dst_ip}")
 
 if __name__ == '__main__':
-    gerenciar_arquivos.salvar_lista_em_txt(list(), 'test')
+    gerenciar_arquivos.salvar_lista_anp_bandeira(list())
