@@ -15,6 +15,8 @@ while True:
         nome_arquivo = input('Informe o nome que o arquivo deve receber: ')
     except ValueError:
         print('Ops! O valor informado não é um inteiro.\nInforme os valores novamente:\n\t')
+    except:
+        print('Houve um erro!')
     else:
         break
 
@@ -41,6 +43,6 @@ gerar_lista(quantidade_v, valor_minimo_v, valor_maximo_v)
 gerenciar_arquivos.salvar_lista_em_txt(lista_random, nome_arquivo)          
 
 if gerenciar_arquivos.verificar_existencia_arquivo(nome_arquivo):
-    print(True)
+    print("O arquivo foi salvo com sucesso")
 else:
-    print(False)
+    print("Houve um erro ao salvar o arquivo")

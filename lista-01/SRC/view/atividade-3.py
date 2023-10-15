@@ -1,29 +1,21 @@
-import dpkt
-import pyshark
-pcap = pyshark.FileCapture("/home/pavao/Desktop/Estudos/arquivos/tcp_dump/cap1.dump")
-# we can look at our packets in multiple ways (acess directly pcap[0], itinerate for pkt in pcap:, get next pcap.next())
-print(pcap.next())
+import os
+import sys
+here = (os.path.dirname(__file__))
+here = here.replace('view', 'models')
+sys.path.append(here)
+from gerenciar_arquivos import gerenciar_arquivos
 
 
+gerenciar_arquivos.descompactar_arquivo()
 
+lista_de_nome = ["ca-2017-01.csv", "ca-2017-02.csv"]#, "ca-2018-01.csv", "ca-2018-02.csv", "ca-2019-01.csv", "ca-2019-02.csv"]
+dados = []
+for i in range((len(lista_de_nome))):
+    dados.append(gerenciar_arquivos.convert_csv_to_list(lista_de_nome[i]))
 
-#def process_tcpdump_file(filename):
-    #with open(filename, 'rb') as file:
-        #pcap = dpkt.pcap.Reader(file)
-        
-        #for timestamp, buf in pcap:
-         #   eth = dpkt.ethernet.Ethernet(buf)
-          #  print(eth.pprint(1))
+media_bandeira = gerenciar_arquivos.ajust_bandeira(dados)
+media_produto_regiao = gerenciar_arquivos.ajust_regiao(dados)
 
-        #     # Check if the packet is an IP packet
-        #     if isinstance(eth.data, dpkt.ip.IP):
-        #         ip = eth.data
-                
-                # # Extract source and destination IP addresses
-                # src_ip = dpkt.utils.inet_to_str(ip.src)
-                # dst_ip = dpkt.utils.inet_to_str(ip.dst)
+gerenciar_arquivos.salvar_lista_anp_bandeira(media_bandeira, "media_bandeira")
 
-                # print(f"Timestamp: {timestamp}, Source IP: {src_ip}, Destination IP: {dst_ip}")
-
-# Usage
-#process_tcpdump_file("cap1.dump")
+gerenciar_arquivos.salvar_lista_anp_bandeira(media_produto_regiao, "media_produto_regiao")

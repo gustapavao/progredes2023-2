@@ -1,5 +1,4 @@
 import os
-import dpkt
 import sys
 import rarfile
 
@@ -9,12 +8,23 @@ class gerenciar_arquivos():
     def salvar_lista_em_txt(nome_lista: list, nome_arquivo: str):
         caminho = sys.argv[0]
         caminho = os.path.split(caminho)
-        caminho = str(caminho[0] + "/" + f"{nome_arquivo}.txt")
+        if ".txt" in nome_arquivo:
+            caminho = str(caminho[0] + "/" + f"{nome_arquivo}")
+        else:
+            caminho = str(caminho[0] + "/" + f"{nome_arquivo}.txt")
         file = open(caminho, 'w')
         for i in nome_lista:
             file.writelines(f'{i}\n')
         file.close()
-
+    
+    def verificar_existencia_arquivo(nome_arquivo):
+        caminho = sys.argv[0]
+        caminho = os.path.split(caminho)
+        if ".txt" in nome_arquivo:
+            return os.path.exists(caminho[0]+"/"+f"{nome_arquivo}")
+        else:
+            return os.path.exists(caminho[0]+"/"+f"{nome_arquivo}.txt")
+        
     def salvar_lista_anp_bandeira(nome_lista: list, nome_arquivo: str):
         caminho = sys.argv[0]
         caminho = os.path.split(caminho)
@@ -29,7 +39,9 @@ class gerenciar_arquivos():
 
 
     def descompactar_arquivo():
-        arq = "/home/pavao/Desktop/Estudos/arquivos/serie_historica_anp.rar" #ajuste de diretório
+        a = os.path.dirname(__file__)
+        a = a.replace("SRC/view", "arquivos_base")
+        arq = f"{a}/serie_historica_anp.rar" #ajuste de diretório
         if rarfile.is_rarfile(arq):
             caminho = sys.argv[0]
             caminho = os.path.split(caminho)
@@ -37,17 +49,12 @@ class gerenciar_arquivos():
                 os.mkdir(os.path.join(caminho[0], "serie_historica_anp"))
                 os.mkdir(os.path.join(caminho[0], "dados_estatisticos"))
             except FileExistsError:
-                print("\nThe directory already exists")
+                print("\nO arquivo já existe")
                 exit()
             file = rarfile.RarFile(arq)
             file.extractall(path=os.path.join(caminho[0], "serie_historica_anp"))
             for f in file.infolist():
                 print(f"O arquivo{f.filename} de tamanho {f.file_size} foi extraido com sucesso")
-
-    def verificar_existencia_arquivo(nome_arquivo):
-        caminho = sys.argv[0]
-        caminho = os.path.split(caminho)
-        return os.path.exists(caminho[0]+"/"+f"{nome_arquivo}.txt")
 
     def ler_arquivo_inteiros(nome_arquivo):
         lst_valores = None
@@ -65,7 +72,7 @@ class gerenciar_arquivos():
                 if not f: break
                 for i in f:
                     try:
-                            lst_valores.append(int(i))
+                        lst_valores.append(int(i))
                     except ValueError:
                         print('Houve um erro com um ou mais valores do arquivo')
                 arquivo.close()
@@ -136,22 +143,6 @@ class gerenciar_arquivos():
 
     def ajust_regiao(dados):
         pass
-
-    def process_tcpdump_file(filename):
-        with open(filename, 'rb') as file:
-            pcap = dpkt.pcap.Reader(file)
-            for timestamp, buf in pcap:
-                eth = dpkt.ethernet.Ethernet(buf)
-
-            
-                if isinstance(eth.data, dpkt.ip.IP):
-                    ip = eth.data
-
-                # Extract source and destination IP addresses
-                    src_ip = dpkt.utils.inet_to_str(ip.src)
-                    dst_ip = dpkt.utils.inet_to_str(ip.dst)
-
-                print(f"Timestamp: {timestamp}, Source IP: {src_ip}, Destination IP: {dst_ip}")
 
 if __name__ == '__main__':
     gerenciar_arquivos.salvar_lista_anp_bandeira(list())

@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./lista-01/SRC/models"
+    ]
+}
