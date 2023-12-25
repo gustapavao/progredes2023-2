@@ -10,10 +10,10 @@ for i in file.readlines():
     protocol_name = Utils.protocol_name(i[1])
     result = NetScan(port=port, protocol=protocol)
     if result == "Closed":
-        pass
+        print(f'Porta {port} : Protocolo: {protocol_name}: (DDDD)/ STATUS: Não Responde')
     elif result == "Open":
-        pass
+        print(f'Porta {port} : Protocolo: {protocol_name}: (DDDD)/ STATUS: Responde')
     else:
-        pass
+        print('Algo deu errado...')
 
 # Porta NNN : Protocolo: PPPP (TCP ou UDP): (DDDD)/ STATUS: YYYY(Responde ou Não Responde)

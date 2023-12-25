@@ -31,13 +31,17 @@ class NetScan:
         except TypeError:
             sock = protocol_param
             try:
-                result = sock.connect_ex((self.HOST, int(port)))
+                result = sock.connect((self.HOST, int(port)))
             except AttributeError:
                 print (f'Houve um erro ao tentar conectar na porta {port}')
+            except TypeError:
+                print("typeError")
             else:
+                print("\n ***", result, port,"\n ******")
                 if result == 0:
                     sock.close()
                     return "Open"
                 else:
+                    print("\n ***", result,"\n ******")
                     sock.close()
                     return "Closed"
